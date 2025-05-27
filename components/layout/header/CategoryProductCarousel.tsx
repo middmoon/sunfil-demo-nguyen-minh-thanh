@@ -15,7 +15,9 @@ interface ProductCarouselProps {
   products: Product[];
 }
 
-export default function ProductCarousel({ products }: ProductCarouselProps) {
+export default function CategoryProductCarousel({
+  products,
+}: ProductCarouselProps) {
   return (
     <div className="relative">
       <Carousel opts={{ align: "start" }} className="w-full">
