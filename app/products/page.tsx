@@ -1,11 +1,11 @@
+import React, { Suspense } from "react";
 import ProductView from "@/components/product/ProductView";
-import { products as allProductsFromData } from "@/data/sample-data"; // Ensure this path and data are correct
-import type { Product } from "@/data/type"; // Ensure this path and type are correct
-import { STATIC_SORT_OPTIONS } from "@/constants/sort-options"; // Ensure this path is correct
+import { products as allProductsFromData } from "@/data/sample-data";
+import type { Product } from "@/data/type";
+import { STATIC_SORT_OPTIONS } from "@/constants/sort-options";
 import BreadCrumb from "@/components/BreadCrum";
 import DealBanner from "@/components/banner/DealBanner";
 
-// Helper function to parse query param to number array
 const parseQueryParamArray = (
   param: string | string[] | undefined
 ): number[] => {
@@ -17,7 +17,6 @@ const parseQueryParamArray = (
     .filter((n) => !isNaN(n));
 };
 
-// Price ranges for filtering logic (can be defined here or imported if shared)
 const priceRangesForFiltering = [
   { id: 1, moTa: "Dưới 100.000đ", max: 99999 },
   { id: 2, moTa: "100.000đ - 500.000đ", min: 100000, max: 500000 },
@@ -25,30 +24,50 @@ const priceRangesForFiltering = [
   { id: 4, moTa: "Trên 1.000.000đ", min: 1000001 },
 ];
 
-export default async function ProductsPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const resolvedSearchParams = await searchParams;
+// Define the expected resolved types
+type ResolvedPageParamsType = Record<string, never>;
+type ResolvedSearchParamsType = {
+  [key: string]: string | string[] | undefined;
+};
 
-  // đổi hết searchParams -> resolvedSearchParams
+interface ProductsPageProps {
+  params: Promise<ResolvedPageParamsType>;
+  searchParams: Promise<ResolvedSearchParamsType>; // searchParams is now also a Promise
+}
+
+export default async function ProductsPage({
+  params: paramsPromise,
+  searchParams: searchParamsPromise, // searchParams is now a promise
+}: ProductsPageProps) {
+  // Await both promises
+  // We can await them concurrently for slight efficiency
+
+  //
+  await paramsPromise;
+  const resolvedSearchParams = await searchParamsPromise;
+  // resolvedParams will be {} for this page, so it's not used.
+  // If ESLint complains about resolvedParams being unused, you can do:
+  // await paramsPromise;
+  // const resolvedSearchParams = await searchParamsPromise;
+
   const activeCategories = parseQueryParamArray(
     resolvedSearchParams.categories
   );
   const activeBrands = parseQueryParamArray(resolvedSearchParams.brands);
   const activeYears = parseQueryParamArray(resolvedSearchParams.years);
   const activeOrigins = parseQueryParamArray(resolvedSearchParams.origins);
+
   const rawPriceRangeId = resolvedSearchParams.priceRangeId;
   const activePriceRangeId =
-    typeof rawPriceRangeId === "string" && !isNaN(parseInt(rawPriceRangeId, 10))
-      ? parseInt(rawPriceRangeId, 10)
+    typeof rawPriceRangeId === "string" && !isNaN(+rawPriceRangeId)
+      ? +rawPriceRangeId
       : undefined;
 
   const initialSortBy =
     STATIC_SORT_OPTIONS.find((opt) => opt.isActive)?.value ||
     STATIC_SORT_OPTIONS[0]?.value ||
     "newest";
+
   const sortBy =
     typeof resolvedSearchParams.sort === "string"
       ? resolvedSearchParams.sort
@@ -68,7 +87,7 @@ export default async function ProductsPage({
   }
   if (activeYears.length > 0) {
     filteredProducts = filteredProducts.filter((product) =>
-      activeYears.includes(parseInt(product.year_of_manufacture, 10))
+      activeYears.includes(parseInt(String(product.year_of_manufacture), 10))
     );
   }
   if (activeOrigins.length > 0) {
@@ -124,7 +143,6 @@ export default async function ProductsPage({
     years: activeYears,
     origins: activeOrigins,
     priceRangeId: activePriceRangeId,
-    // searchTerm: searchTerm,
     sortBy: sortBy,
   };
 
@@ -133,6 +151,8 @@ export default async function ProductsPage({
     { label: "Sản phẩm" },
   ];
 
+  const productViewFallback = <div>Đang tải sản phẩm...</div>;
+
   return (
     <div>
       <BreadCrumb items={breadcrumbItems} />
@@ -140,11 +160,13 @@ export default async function ProductsPage({
         bannerImage="/event.png"
         products={filteredProducts.slice(0, 8)}
         title="Ưu đãi nổi bật"
-      ></DealBanner>
-      <ProductView
-        initialProducts={filteredProducts}
-        initialActiveFilters={initialActiveFiltersForClient}
       />
+      <Suspense fallback={productViewFallback}>
+        <ProductView
+          initialProducts={filteredProducts}
+          initialActiveFilters={initialActiveFiltersForClient}
+        />
+      </Suspense>
     </div>
   );
 }

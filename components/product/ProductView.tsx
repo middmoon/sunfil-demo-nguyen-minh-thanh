@@ -1,4 +1,3 @@
-// src/components/product/ProductView.tsx
 "use client";
 
 import { useCallback } from "react";
@@ -7,7 +6,7 @@ import ProductListFilter from "@/components/product/ProductListFilter";
 import ProductFilterSidebar from "@/components/product/ProductFilterSidebar";
 import ProductCard from "@/components/product/ProductCard";
 import type { Product } from "@/data/type";
-import type { PriceRange as FilterPriceRange } from "@/types/filter"; // Ensure this type is correctly defined
+import type { PriceRange as FilterPriceRange } from "@/types/filter";
 
 interface InitialActiveFilters {
   categories: number[];
@@ -15,7 +14,6 @@ interface InitialActiveFilters {
   years: number[];
   origins: number[];
   priceRangeId?: number;
-  // searchTerm: string;
   sortBy: string;
 }
 
@@ -24,7 +22,6 @@ interface ProductViewProps {
   initialActiveFilters: InitialActiveFilters;
 }
 
-// This could also be passed from the server component if it's dynamic
 const priceRangesForDisplay: (FilterPriceRange & {
   min?: number;
   max?: number;
@@ -55,8 +52,6 @@ export default function ProductView({
         }
       }
       const query = current.toString();
-      // Use replace for filter changes to avoid polluting browser history too much,
-      // or push if you prefer distinct history entries for each filter state.
       router.replace(`${pathname}${query ? `?${query}` : ""}`, {
         scroll: false,
       });
@@ -135,8 +130,8 @@ export default function ProductView({
   );
 
   return (
-    <div className="container mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div className="container mx-auto py-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-1">
           <ProductFilterSidebar
             selectedCategories={initialActiveFilters.categories}
@@ -161,7 +156,7 @@ export default function ProductView({
           />
 
           {initialProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
               {initialProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
