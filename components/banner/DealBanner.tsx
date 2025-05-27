@@ -10,11 +10,7 @@ interface DealBannerProps {
   title?: string;
 }
 
-export default function DealBanner({
-  bannerImage,
-  products,
-  title = "Ưu đãi nổi bật",
-}: DealBannerProps) {
+export default function DealBanner({ bannerImage, products }: DealBannerProps) {
   return (
     <section className="container mx-auto w-full bg-blue-500 m-4 rounded-2xl">
       {/* Banner ảnh */}

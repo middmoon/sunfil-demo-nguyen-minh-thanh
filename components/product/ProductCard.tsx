@@ -18,7 +18,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
     const updatedCart = [...existingCart];
     const existingItemIndex = updatedCart.findIndex(
-      (item: any) => item.id === product.id
+      (item: Product) => item.id === product.id
     );
 
     if (existingItemIndex !== -1) {

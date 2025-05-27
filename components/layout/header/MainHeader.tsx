@@ -6,11 +6,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CartPreview from "./CardPreview";
 import Link from "next/link";
-
 // import icons
 import { Search, Camera } from "lucide-react";
 import { RiShoppingBasket2Fill } from "react-icons/ri";
 import { FaCircleUser } from "react-icons/fa6";
+
+interface CartItem {
+  id: string;
+  name?: string;
+  quantity: number;
+}
 
 export default function MainHeader() {
   const [cartCount, setCartCount] = useState(0);
@@ -19,7 +24,7 @@ export default function MainHeader() {
     const updateCart = () => {
       const cartItems = JSON.parse(localStorage.getItem("cart_items") || "[]");
       const total = cartItems.reduce(
-        (sum: number, item: any) => sum + item.quantity,
+        (sum: number, item: CartItem) => sum + item.quantity,
         0
       );
       setCartCount(total);
