@@ -2,8 +2,16 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+interface CartItem {
+  id: string | number;
+  img_url?: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
+
 export default function CartPreview() {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
     const loadCart = () => {

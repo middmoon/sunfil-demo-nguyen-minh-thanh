@@ -12,7 +12,6 @@ import { ChevronDown, Check } from "lucide-react";
 import {
   STATIC_SORT_OPTIONS,
   PRICE_SORT_OPTIONS,
-  type SortOption,
 } from "@/constants/sort-options"; // Adjust path as necessary
 
 interface ProductListFilterProps {
