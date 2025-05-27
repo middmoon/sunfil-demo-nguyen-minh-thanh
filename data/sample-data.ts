@@ -131,82 +131,103 @@ const getSubCategories = (
 export const products: Product[] = [
   {
     id: 1,
-    name: "Bosch 3330 Premium Oil Filter",
-    img_url: "/images/products/52046262-2.jpg",
+    name: "Bosch Advanced Filter (New, High Rating, Low Price)",
+    img_url: "/images/products/phin-inox-loc-dau-ap-luc-cao-3.webp",
     year_of_manufacture: "2023",
-    is_best_seller: true,
-    price: 130000,
-    brand: brands[0], // Bosch
-    category: [categories[0]], // Lọc dầu động cơ
-    sub_categories: getSubCategories([0], [0]), // Cho xe tải
+    is_best_seller: false,
+    price: 120000,
+    original_price: 150000, // Has a discount
+    brand: brands[0],
+    category: [categories[0]],
+    sub_categories: [categories[0].sub_categories![0]],
+    salesCount: 75,
+    averageRating: 4.8,
   },
   {
     id: 2,
-    name: "K&N HP-1008 Performance Gold Oil Filter",
-    img_url: "/images/products/phin-inox-loc-dau-ap-luc-cao-3.webp",
-    year_of_manufacture: "2023",
+    name: "K&N Performance Pro (Bestseller, Med Price)",
+    img_url:
+      "/images/products/155626-z-phin-ong-loc-dau-thuy-luc-loc-dau-dong-co-loc-nhot.webp",
+    year_of_manufacture: "2022",
     is_best_seller: true,
-    price: 1550000,
-    brand: brands[1], // K&N
-    category: [categories[1]], // Lọc dầu hiệu suất cao
-    sub_categories: getSubCategories([1], [0]), // Lọc dầu cho xe đua
+    price: 480000,
+    // no original_price means no discount calculated this way
+    brand: brands[1],
+    category: [categories[1]],
+    sub_categories: [categories[1].sub_categories![0]],
+    salesCount: 250, // Bestseller
+    averageRating: 4.5,
   },
   {
     id: 3,
-    name: "Mobil 1 M1-110A Extended Performance Oil Filter",
+    name: "Mobil 1 Synthetic Shield (High Price, Good Rating)",
     img_url:
       "/images/products/155626-z-phin-ong-loc-dau-thuy-luc-loc-dau-dong-co-loc-nhot.webp",
     year_of_manufacture: "2023",
-    is_best_seller: true,
+    is_best_seller: false,
     price: 650000,
-    brand: brands[2], // Mobil 1
-    category: [categories[2]], // Lọc dầu tổng hợp
-    sub_categories: getSubCategories([2], [0]), // Dùng cho dầu tổng hợp hoàn toàn
+    original_price: 680000,
+    brand: brands[2],
+    category: [categories[0]],
+    sub_categories: [categories[0].sub_categories![0]],
+    salesCount: 120,
+    averageRating: 4.6,
   },
   {
     id: 4,
-    name: "Denso 150-1000 First Time Fit Oil Filter",
-    img_url: "/images/products/52046262-2.jpg",
-    year_of_manufacture: "2023",
+    name: "Denso First Time Fit (Older, Discounted Heavily)",
+    img_url: "/images/products/phin-inox-loc-dau-ap-luc-cao-3.webp",
+    year_of_manufacture: "2021",
     is_best_seller: false,
-    price: 400000,
-    brand: brands[3], // Denso
-    category: [categories[0]], // Lọc dầu động cơ
-    sub_categories: getSubCategories([0], [1]), // Cho xe du lịch
+    price: 90000,
+    original_price: 180000,
+    brand: brands[3],
+    category: [categories[0]],
+    sub_categories: [categories[0].sub_categories![0]],
+    salesCount: 50,
+    averageRating: 4.1,
   },
   {
     id: 5,
-    name: "Castrol GTX 7317 Conventional Oil Filter",
+    name: "Castrol GTX Standard (Popular, Low Rating)",
+    img_url:
+      "/images/products/155626-z-phin-ong-loc-dau-thuy-luc-loc-dau-dong-co-loc-nhot.webp",
+    year_of_manufacture: "2023",
+    is_best_seller: false,
+    price: 150000,
+    brand: brands[4],
+    category: [categories[0]],
+    sub_categories: [categories[0].sub_categories![0]],
+    salesCount: 180,
+    averageRating: 3.9,
+  },
+  {
+    id: 6,
+    name: "Bosch Economy (Lowest Price)",
+    img_url: "/images/products/phin-inox-loc-dau-ap-luc-cao-3.webp",
+    year_of_manufacture: "2023",
+    is_best_seller: false,
+    price: 80000,
+    brand: brands[0],
+    category: [categories[0]],
+    sub_categories: [categories[0].sub_categories![0]],
+    salesCount: 20,
+    averageRating: 3.5,
+  },
+  {
+    id: 7,
+    name: "K&N Ultimate Flow (Highest Price, Top Rating)",
     img_url:
       "/images/products/155626-z-phin-ong-loc-dau-thuy-luc-loc-dau-dong-co-loc-nhot.webp",
     year_of_manufacture: "2023",
     is_best_seller: true,
-    price: 450000,
-    brand: brands[4], // Castrol
-    category: [categories[1]], // Lọc dầu hiệu suất cao
-    sub_categories: getSubCategories([1], [1]), // Lọc dầu lưu lượng cao
-  },
-  {
-    id: 6,
-    name: "Bosch Workshop D3323 Oil Filter",
-    img_url: "/images/products/phin-inox-loc-dau-ap-luc-cao-3.webp",
-    year_of_manufacture: "2023",
-    is_best_seller: false,
-    price: 180000,
-    brand: brands[0], // Bosch
-    category: [categories[0]], // Lọc dầu động cơ
-    sub_categories: getSubCategories([0], [2]), // Lọc dầu máy dầu diesel
-  },
-  {
-    id: 7,
-    name: "K&N PS-7000 Pro-Series Oil Filter",
-    img_url: "/images/products/52046262-2.jpg",
-    year_of_manufacture: "2024",
-    is_best_seller: true,
     price: 1200000,
-    brand: brands[1], // K&N
-    category: [categories[1], categories[2]], // Multiple categories
-    sub_categories: getSubCategories([1, 2], [[0], [1]]), // Lọc dầu cho xe đua, Dùng cho dầu bán tổng hợp
+    original_price: 1250000,
+    brand: brands[1],
+    category: [categories[1]],
+    sub_categories: [categories[1].sub_categories![0]],
+    salesCount: 90,
+    averageRating: 4.9,
   },
   {
     id: 8,
@@ -216,9 +237,11 @@ export const products: Product[] = [
     year_of_manufacture: "2024",
     is_best_seller: false,
     price: 750000,
-    brand: brands[2], // Mobil 1
-    category: [categories[2]], // Lọc dầu tổng hợp
-    sub_categories: getSubCategories([2], [1]), // Dùng cho dầu bán tổng hợp
+    brand: brands[2],
+    category: [categories[2]],
+    sub_categories: getSubCategories([2], [1]),
+    salesCount: 90,
+    averageRating: 4.9,
   },
   {
     id: 9,
@@ -227,9 +250,9 @@ export const products: Product[] = [
     year_of_manufacture: "2023",
     is_best_seller: true,
     price: 380000,
-    brand: brands[3], // Denso
-    category: [categories[0]], // Lọc dầu động cơ
-    sub_categories: getSubCategories([0], [0]), // Cho xe tải
+    brand: brands[3],
+    category: [categories[0]],
+    sub_categories: getSubCategories([0], [0]),
   },
   {
     id: 10,

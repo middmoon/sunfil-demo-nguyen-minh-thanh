@@ -4,12 +4,14 @@ import { Label } from "@/components/ui/label";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { FaShippingFast } from "react-icons/fa";
 import { RiRefreshFill } from "react-icons/ri";
+import CategoryList from "./CategoryList";
+import { products } from "@/data/sample-data";
 
 export default function NavBar() {
   return (
-    <div className="container mx-auto p-4 flex flex-row justify-between items-center">
+    <div className="container mx-auto py-4 flex flex-row justify-between items-center">
       <div className="flex flex-row gap-8">
-        <Label className="text-sm font-semibold">Danh Mục Sản Phẩm</Label>
+        <CategoryList products={products.slice(0, 5)} />
         <Label className="text-sm font-semibold">Về Chúng Tôi</Label>
         <Label className="text-sm font-semibold">Catalog</Label>
         <Label className="text-sm font-semibold">Liên Hệ</Label>

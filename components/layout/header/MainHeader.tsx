@@ -1,6 +1,11 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import CartPreview from "./CardPreview";
+import Link from "next/link";
 
 // import icons
 import { Search, Camera } from "lucide-react";
@@ -8,10 +13,29 @@ import { RiShoppingBasket2Fill } from "react-icons/ri";
 import { FaCircleUser } from "react-icons/fa6";
 
 export default function MainHeader() {
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const updateCart = () => {
+      const cartItems = JSON.parse(localStorage.getItem("cart_items") || "[]");
+      const total = cartItems.reduce(
+        (sum: number, item: any) => sum + item.quantity,
+        0
+      );
+      setCartCount(total);
+    };
+
+    updateCart();
+    window.addEventListener("cart-updated", updateCart);
+    return () => window.removeEventListener("cart-updated", updateCart);
+  }, []);
+
   return (
     <div className="container mx-auto p-4 flex justify-between items-center">
       <div className="shrink-0">
-        <Image src="/logo.png" alt="Logo" width={240} height={80} />
+        <Link href="/" className="flex items-center">
+          <Image src="/logo.png" alt="Logo" width={240} height={80} />
+        </Link>
       </div>
 
       <div className="flex-1">
@@ -42,9 +66,21 @@ export default function MainHeader() {
           <Label>VI</Label>
         </div>
         <div className="p-2 ml-2">
-          <div className="flex items-center gap-2">
-            <RiShoppingBasket2Fill className="h-8 w-8 text-primary" />
-            <Label className="font-semibold text-md">Giỏ hàng</Label>
+          <div className="relative p-2 ml-2 group">
+            <div className="flex items-center gap-2">
+              <RiShoppingBasket2Fill className="h-8 w-8 text-primary" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+              <Label className="font-semibold text-md">Giỏ hàng</Label>
+            </div>
+
+            {/* Hover popup */}
+            <div className="absolute top-12 right-0 bg-white shadow-lg border rounded-md w-72 p-4 z-50 hidden group-hover:block">
+              <CartPreview />
+            </div>
           </div>
         </div>
         <div className="p-2 ml-2">

@@ -9,7 +9,7 @@ import {
 
 export default function AnnouncementBar() {
   return (
-    <div className="bg-gray-100 p-2 bg-custom-gradient">
+    <div className="bg-gray-100 py-2 bg-custom-gradient">
       <div className="container mx-auto flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
         {/* Phần khuyến mãi luôn hiển thị */}
         <div className="flex items-center gap-2">

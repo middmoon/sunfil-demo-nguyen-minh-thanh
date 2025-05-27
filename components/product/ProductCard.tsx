@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,9 +12,28 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const handleAddToCart = () => {
+    const cartKey = "cart_items";
+    const existingCart = JSON.parse(localStorage.getItem(cartKey) || "[]");
+
+    const updatedCart = [...existingCart];
+    const existingItemIndex = updatedCart.findIndex(
+      (item: any) => item.id === product.id
+    );
+
+    if (existingItemIndex !== -1) {
+      updatedCart[existingItemIndex].quantity += 1;
+    } else {
+      updatedCart.push({ ...product, quantity: 1 });
+    }
+
+    localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cart-updated")); // Bắn sự kiện để header cập nhật
+  };
+
   return (
     <Card className="w-full h-full hover:shadow-md transition-all duration-200">
-      <CardContent className="flex flex-col h-full p-5">
+      <CardContent className="flex flex-col h-full">
         {/* Ảnh */}
         <div className="relative w-full flex items-center justify-center overflow-hidden mb-4">
           <div className="w-80 aspect-square bg-white flex items-center justify-center overflow-hidden">
@@ -55,7 +76,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Nút mua ngay ở đáy */}
         <div className="mt-4">
-          <Button className="w-full bg-blue-200 text-primary hover:bg-blue-300 hover:text-primary hover:shadow-none focus:ring-0 active:scale-100 font-semibold">
+          <Button
+            onClick={handleAddToCart}
+            className="w-full bg-blue-200 text-primary hover:bg-blue-300 hover:text-primary hover:shadow-none focus:ring-0 active:scale-100 font-semibold"
+          >
             Mua ngay
           </Button>
         </div>

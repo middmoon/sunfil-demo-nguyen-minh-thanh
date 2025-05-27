@@ -35,7 +35,10 @@ export interface Product {
   year_of_manufacture: string;
   is_best_seller: boolean;
   price: number;
+  original_price?: number; // For discount calculation (optional)
   brand: Brand;
   category: Category[];
   sub_categories: SubCategory[];
+  salesCount?: number;
+  averageRating?: number;
 }

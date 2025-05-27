@@ -1,6 +1,6 @@
-"use client";
+// src/components/product/ProductListFilter.tsx
+"use client"; // This component interacts with user, so it's a client component
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,45 +8,67 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 import {
   STATIC_SORT_OPTIONS,
   PRICE_SORT_OPTIONS,
   type SortOption,
-} from "@/constants/sort-options";
+} from "@/constants/sort-options"; // Adjust path as necessary
 
-export default function ProductListFilter() {
-  const [selectedPriceSort, setSelectedPriceSort] = useState<SortOption>(
-    PRICE_SORT_OPTIONS[0]
+interface ProductListFilterProps {
+  sortBy: string;
+  onSortChange: (sortValue: string) => void;
+  resultCount?: number;
+}
+
+export default function ProductListFilter({
+  sortBy,
+  onSortChange,
+  resultCount,
+}: ProductListFilterProps) {
+  const isPriceSortActive = PRICE_SORT_OPTIONS.some(
+    (opt) => opt.value === sortBy
   );
-  const [activeSortOption, setActiveSortOption] = useState<string>("newest");
 
-  const handlePriceSelect = (option: SortOption) => {
-    setSelectedPriceSort(option);
-  };
+  const priceDropdownLabel = isPriceSortActive
+    ? PRICE_SORT_OPTIONS.find((opt) => opt.value === sortBy)?.label || "Giá"
+    : "Giá";
 
   const handleStaticSortSelect = (value: string) => {
-    setActiveSortOption(value);
+    onSortChange(value);
+  };
+
+  const handlePriceSortSelect = (optionValue: string) => {
+    onSortChange(optionValue);
   };
 
   return (
-    <div className="flex justify-between items-center flex-wrap gap-2">
-      <span className="text-xl font-medium text-black">Danh sách sản phẩm</span>
+    <div className="flex flex-col sm:flex-row justify-between items-center flex-wrap gap-4 p-4 bg-card border rounded-lg">
+      <span className="text-lg font-medium text-gray-900">
+        Danh sách sản phẩm
+        {resultCount !== undefined && (
+          <span className="text-sm text-gray-500 ml-2">
+            ({resultCount} kết quả)
+          </span>
+        )}
+      </span>
 
-      <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-gray-700">
-        <span className="text-gray-500">Sắp xếp theo</span>
+      <div className="flex flex-wrap items-center gap-2 text-sm font-medium">
+        <span className="text-gray-500 mr-2">Sắp xếp theo</span>
 
         {STATIC_SORT_OPTIONS.map((item) => (
           <Button
             key={item.value}
-            variant={activeSortOption === item.value ? "default" : "outline"}
+            variant={sortBy === item.value ? "default" : "outline"}
             size="sm"
             onClick={() => handleStaticSortSelect(item.value)}
-            className={
-              activeSortOption === item.value
-                ? "border-blue-500 text-blue-500 bg-blue-50 hover:bg-blue-100"
-                : "border-gray-300 hover:bg-gray-100"
-            }
+            className={`
+              ${
+                sortBy === item.value
+                  ? "border-primary text-primary bg-primary-foreground hover:bg-primary/10"
+                  : "border-gray-300 hover:bg-gray-100 text-gray-700"
+              }
+            `}
           >
             {item.label}
           </Button>
@@ -55,25 +77,27 @@ export default function ProductListFilter() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
+              variant={isPriceSortActive ? "default" : "outline"}
               size="sm"
-              className="border-gray-300 hover:bg-gray-100"
+              className={`
+                ${
+                  isPriceSortActive
+                    ? "border-primary text-primary bg-primary-foreground hover:bg-primary/10"
+                    : "border-gray-300 hover:bg-gray-100 text-gray-700"
+                }
+              `}
             >
-              {selectedPriceSort.label}
+              {priceDropdownLabel}
               <ChevronDown className="w-4 h-4 ml-1" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuContent align="end" className="w-56">
             {PRICE_SORT_OPTIONS.map((option) => (
               <DropdownMenuItem
                 key={option.value}
-                onClick={() => handlePriceSelect(option)}
-                className={
-                  option.value === selectedPriceSort.value
-                    ? "bg-gray-100 font-semibold"
-                    : ""
-                }
+                onClick={() => handlePriceSortSelect(option.value)}
               >
+                {option.value === sortBy && <Check className="mr-2 h-4 w-4" />}
                 {option.label}
               </DropdownMenuItem>
             ))}
